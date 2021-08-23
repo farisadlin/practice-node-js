@@ -1,6 +1,9 @@
 require("dotenv").config();
 var { response } = require("express");
 var express = require("express");
+var bodyParser = require('body-parser')
+
+var urlEncodedParser = bodyParser.urlencoded({extended: false})
 
 var hostname = "127.0.0.1";
 var port = process.env.PORT || 3000;
@@ -23,9 +26,12 @@ app.get('/getProcess', (req, res) => {
     res.end(JSON.stringify(response))
 })
 
-app.post('/', (req, res) => {
-    console.log("This is a post request")
-    res.send('Hello Post')
+app.post('/postProcess', urlEncodedParser, (req, res) => {
+    response = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName
+    }
+    res.end(JSON.stringify(response))
 })
 
 app.delete('/deleteUser', (req, res) => {
